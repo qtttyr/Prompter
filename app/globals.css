@@ -1,26 +1,70 @@
 @import "tailwindcss";
+@theme {
+  --color-cosmic-black: #020202;
+  --color-cosmic-violet: #2d0b5a;
+  --color-cosmic-blue: #0a84ff;
+  --color-cosmic-dark: #0b0b0f;
+  --color-cosmic-border: #1c1c28;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  --animate-shimmer: shimmer 2s linear infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-border-beam: border-beam calc(var(--duration)*1s) infinite linear;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  @keyframes shimmer {
+    from { background-position: 0 0; }
+    to { background-position: -200% 0; }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+  @keyframes border-beam {
+    100% { offset-distance: 100%; }
   }
 }
 
+:root {
+  --background: #020202;
+  --foreground: #ededed;
+}
+
 body {
-  background: var(--background);
   color: var(--foreground);
+  background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+.bg-mesh {
+  background-color: #020202;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(45, 11, 90, 0.4) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(10, 132, 255, 0.3) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(45, 11, 90, 0.4) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(10, 132, 255, 0.3) 0px, transparent 50%);
+  background-attachment: fixed;
+}
+
+.bg-noise {
+  position: relative;
+}
+
+.bg-noise::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.04;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+.glass-panel {
+  background: rgba(11, 11, 15, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
